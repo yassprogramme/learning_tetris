@@ -82,13 +82,12 @@ def simulation(W):
     game = tetris.Tetris(20, 10)
     while game.state!="gameover":
 
-        fig=np.random.randint(0,6)
         color=1
 
         game.new_figure()
 
         old_rotation = game.figure.rotation
-        col, rot = evaluate_best_move(W,game.field,fig,color)
+        col, rot = evaluate_best_move(W,game.field,game.figure.type,color)
         game.rotate()
         if game.intersects():
             game.figure.rotation = old_rotation  # Restaure la rotation précédente

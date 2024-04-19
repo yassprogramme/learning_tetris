@@ -1,7 +1,15 @@
-from game_code import tetris
-import copy
+from game_code import tetris 
 import numpy as np
 
+figures = [
+        [[1, 5, 9, 13], [4, 5, 6, 7]],
+        [[4, 5, 9, 10], [2, 6, 5, 9]],
+        [[6, 7, 9, 10], [1, 5, 6, 10]],
+        [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]],
+        [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]],
+        [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]],
+        [[1, 2, 5, 6]],
+    ]
 
 
 def column_height(field): # from top to bottom
@@ -26,11 +34,11 @@ def column_difference(field):# absolute difference between adjacent columns
     return(df)
 
 def holes(field):
-    L=0
-    h=column_height(field)
+    L = 0
+    h  =column_height(field)
     for j in range(10):
         for i in range(20-h[j],20):
-            if field[i][j]==0:
+            if field[i][j] == 0:
                 L+=1
     return(L)
 
@@ -40,64 +48,57 @@ def evaluate(W, field):
     dh=column_difference(field)
     L=holes(field)
     H=maximum_height(field)
-    S1,S2,S3,S4 = 0,0,0,0
+    S = 0
     for k in range (len(h)):
-        S1+=h[k]*W[k]
+        S += h[k] * W[k]
     for k in range (len(dh)):
-        S2+=dh[k]*W[10+k]
-    S3=W[19]*L
-    S4=W[20]*H
-    return(S1+S2+S3+S4)
+        S += dh[k] * W[10+k]
+    S += W[19] * L
+    S += W[20] * H
+    return(S)
 
-def evaluate_best_move(W, field, type, color):
-    L = []
-    score = []
 
-    initial_field = [row[:] for row in field]  # Sauvegarde de l'état initial de la grille
-
-    for k in range(4):
-        for col in range(-5, 10):
-            game_copy = tetris.Tetris(20, 10)
-            game_copy.field = [row[:] for row in initial_field]  # Restauration de l'état initial de la grille
-            game_copy.new_figure()
+def evaluate_best_move(W,field,type):
+    L=[]
+    score=[]
+    n_rot = len(figures[type])
+    
+    for k in range (n_rot):
+        for col in range (-4,6):
+            game_copy = tetris.Tetris(20,10)
             
-            for _ in range(k):
-                game_copy.rotate() 
+            game_copy.field = [[cell for cell in row] for row in field]
 
-            game_copy.go_side(col)
+            game_copy.new_figure(type)
+            game_copy.rotate(k)
+            game_copy.go_side(col) 
+            
 
             if not game_copy.intersects():
                 game_copy.go_space()
-                score.append(evaluate(W, game_copy.field))
-                L.append([col, k])
-
-    if len(L) > 0:
+                score.append(evaluate(W,game_copy.field))
+                L.append((col,k))
+    if len(L)>0:
         best_move = score.index(min(score))
-        return L[best_move]
-    else:
-        return [0, 0]
+        return(L[best_move])
+    else : 
+        return((0,0))
+
+        
 
     
 def simulation(W):
+    
     game = tetris.Tetris(20, 10)
-    while game.state!="gameover":
+    while game.state != "gameover":
 
-        color=1
+        type = np.random.randint(0,6)
+        game.new_figure(type)
 
-        game.new_figure()
-
-        old_rotation = game.figure.rotation
-        col, rot = evaluate_best_move(W,game.field,game.figure.type,color)
-        game.rotate()
-        if game.intersects():
-            game.figure.rotation = old_rotation  # Restaure la rotation précédente
+        col, rot = evaluate_best_move(W,game.field,type)
+        game.rotate(rot)
         game.go_side(col)
-
-        if game.intersects():
-            game.state="gameover"
-        
-        else:
-            game.go_space()
+        game.go_space()
 
     return(game.score)
 

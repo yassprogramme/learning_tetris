@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 colors = [
     (0, 0, 0),

@@ -102,3 +102,7 @@ def simulation(W):
 
     return(game.score)
 
+
+np.random.seed(42)
+print(simulation(np.ones(21)))
+

@@ -1,4 +1,4 @@
-from game_code import tetris 
+import tetris
 import numpy as np
 
 figures = [
@@ -101,8 +101,3 @@ def simulation(W):
         game.go_space()
 
     return(game.score)
-
-
-np.random.seed(42)
-print(simulation(np.ones(21)))
-

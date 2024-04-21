@@ -1,5 +1,5 @@
 import tkinter as tk
-from game_code import tetris
+import tetris
 import game_simulation
 import numpy as np
 
@@ -48,7 +48,7 @@ def simulate_game(canvas, game, W):
         game.go_side(col)
         game.go_space()
         draw_game(canvas, game)
-        canvas.after(100, lambda: simulate_game(canvas, game, W))
+        canvas.after(20, lambda: simulate_game(canvas, game, W))
 
 # Create the Tkinter window
 window = tk.Tk()

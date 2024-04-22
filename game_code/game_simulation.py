@@ -64,7 +64,7 @@ def evaluate_best_move(W,field,type):
     n_rot = len(figures[type])
     
     for k in range (n_rot):
-        for col in range (-4,6):
+        for col in range (-5,10):
             game_copy = tetris.Tetris(20,10)
             
             game_copy.field = [[cell for cell in row] for row in field]

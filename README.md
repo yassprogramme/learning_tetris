@@ -19,4 +19,8 @@ Simulated Annealing is inspired by the annealing process in metallurgy. This tec
 Our approach to assessing the effectiveness of each optimization method includes comprehensive performance metrics. We track the average score, the highest score achieved, and the computational efficiency . Additionally, we have implemented parallelization on the CPU to enhance the computational efficiency. This allows for simultaneous processing of multiple training instances, significantly speeding up the learning process. 
 
 
+### References 
+
+ **Szita, I., & Lőrincz, A. (2006). Learning Tetris Using the Noisy Cross-Entropy Method.**
+
 

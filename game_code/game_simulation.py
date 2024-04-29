@@ -98,6 +98,10 @@ def simulation(W):
         col, rot = evaluate_best_move(W,game.field,type)
         game.rotate(rot)
         game.go_side(col)
-        game.go_space()
+        if game.intersects():
+            game.state="gameover"
+        
+        else:
+            game.go_space()
 
     return(game.score)

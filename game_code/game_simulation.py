@@ -84,9 +84,9 @@ def evaluate_best_move(W,field,type):
     else : 
         return((0,0))
 
-        
 
-    
+
+
 def simulation(W):
     
     game = tetris.Tetris(20, 10)
